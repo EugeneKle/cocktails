@@ -23,15 +23,15 @@ const ingredient = ref(null)
         <div class="line"></div>
 
         <div class="select-wrapper">
-            <el-select
+          <el-select
             v-model="ingredient"
             placeholder="Choose main ingredient"
             size="large"
             class="select"
           >
-             <el-option
+            <el-option
               v-for="item in ingredients"
-              :key="item.strIngredient1"
+              :key="item.strIngredient1"  
               :label="item.strIngredient1"
               :value="item.strIngredient1"
             />
