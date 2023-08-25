@@ -9,16 +9,23 @@ const rootStore = useRootStore()
 
 rootStore.getIngredients()
 
-const { ingredients, cocktails } = storeToRefs(rootStore)
-const ingredient = ref(null)
+const { ingredients, cocktails, ingredient } = storeToRefs(rootStore)
 
 function getCocktails() {
-  rootStore.getConcktails(ingredient.value)
+  rootStore.getCocktails(rootStore.ingredient)
+}
+
+function removeIngredient() {
+  rootStore.setIngredient(null)
 }
 </script>
 
 <template>
-  <AppLayout imgUrl="/src/assets/img/bg-1.jpg">
+  <AppLayout
+    img-url="/src/assets/img/bg-1.jpg"
+    :back-func="removeIngredient"
+    :is-back-button-visible="!ingredient"
+  >
     <div class="wrapper">
       <div
         v-if="!ingredient || !cocktails"
@@ -29,10 +36,12 @@ function getCocktails() {
 
         <div class="select-wrapper">
           <el-select
-            v-model="ingredient"
+            v-model="rootStore.ingredient"
             placeholder="Choose main ingredient"
             size="large"
             class="select"
+            filterable
+            allow-create
             @change="getCocktails"
           >
             <el-option
@@ -77,15 +86,6 @@ function getCocktails() {
 
 <style lang="sass" scoped>
 @import '../assets/styles/main'
-
-.wrapper
-  display: flex
-  align-items: center
-  justify-content: center
-
-.info
-  padding: 80px 0px
-  text-align: center
 .select-wrapper
   padding-top: 50px
 
@@ -105,7 +105,6 @@ function getCocktails() {
 
 .cocktails
   display: flex
-  justify-content: space-between
   flex-wrap: wrap
   max-height: 400px
   overflow-y: auto
